@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #0a0a29, #000);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 8vw, 5rem);
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffd700, #ff4500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        p {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            margin-bottom: 30px;
+            color: #f0f0f0;
+        }
+
+        .countdown {
+            font-size: clamp(1.5rem, 6vw, 3rem);
+            margin-bottom: 30px;
+            color: #ffd700;
+        }
+
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ffd700;
+            }
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ffd700;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Happy New Year 2025!</h1>
+        <p>Wishing you 365 days of success, happiness, and prosperity</p>
+        <div class="countdown" id="countdown"></div>
+        <p>May this year bring new achievements and a lot of new inspirations in your life</p>
+    </div>
+
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const now = new Date();
+            const newYear = new Date('January 1, 2025 00:00:00').getTime();
+            const timeLeft = newYear - now;
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').innerHTML = 
+                ${days}d ${hours}h ${minutes}m ${seconds}s;
+        }
+
+        setInterval(updateCountdown, 1000);
+
+        // Fireworks Animation
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            
+            // Random position
+            const startX = Math.random() * window.innerWidth;
+            const startY = window.innerHeight;
+            
+            // Random end position
+            const endX = startX + (Math.random() - 0.5) * 200;
+            const endY = startY - Math.random() * window.innerHeight * 0.8;
+            
+            // Random color
+            const hue = Math.random() * 360;
+            firework.style.backgroundColor = hsl(${hue}, 100%, 50%);
+            
+            // Set initial position
+            firework.style.left = ${startX}px;
+            firework.style.top = ${startY}px;
+            
+            document.body.appendChild(firework);
+            
+            // Animate the firework
+            firework.animate([
+                { transform: translate(0, 0), opacity: 1 },
+                { transform: translate(${endX - startX}px, ${endY - startY}px), opacity: 0 }
+            ], {
+                duration: 1000 + Math.random() * 1000,
+                easing: 'ease-out'
+            }).onfinish = () => {
+                firework.remove();
+                createExplosion(endX, endY, hue);
+            };
+        }
+
+        function createExplosion(x, y, hue) {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework';
+                particle.style.left = ${x}px;
+                particle.style.top = ${y}px;
+                particle.style.backgroundColor = hsl(${hue}, 100%, 50%);
+                
+                const angle = (Math.PI * 2 * i) / 20;
+                const velocity = 2 + Math.random() * 2;
+                const velocityX = Math.cos(angle) * velocity;
+                const velocityY = Math.sin(angle) * velocity;
+                
+                document.body.appendChild(particle);
+                
+                particle.animate([
+                    { transform: 'translate(0, 0)', opacity: 1 },
+                    { transform: translate(${velocityX * 50}px, ${velocityY * 50}px), opacity: 0 }
+                ], {
+                    duration: 1000 + Math.random() * 1000,
+                    easing: 'ease-out'
+                }).onfinish = () => particle.remove();
+            }
+        }
+
+        // Create fireworks periodically
+        setInterval(createFirework, 2000);
+    </script>
+</body>
+</html>
